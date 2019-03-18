@@ -1,0 +1,230 @@
+0、排序算法：
+
+1、java集合和工具类、HashMap源码：
+	HashMap源码：
+		初始因子0.75,初始容量16
+		数据结构是数组+链表，java8后结点到达8由链表转为红黑树(聊聊红黑树的特点)
+		引申：队列、栈，树，图
+		线程安全：多线程下HashMap会死循环，拓展到ConcurrentHashMap，ConcurrentHashMap的分段锁，java8后采用CAS代替分段锁，引申CAS，谈谈Atomic原子类和ABA问题
+	ArrayList和LinkList的区别：	
+		ArrayList的底层数据结构是数组，支持随机访问，LinkList的底层数据结构是链表，不支持随机访问，使用下标访问，ArrayList的时间复杂度是O(1)，LinkList是O(n)；LinkList是双
+		  向链表；
+
+2、线程安全：
+	线程安全定义：当多个线程访问某个类时，不管运行时环境采用何种调度方式或者这些线程将如何交替进行，并且在主调代码中不需要任何额外的同步或协同，这个类都能表现出正确的行为，那么称这个类是线程安全的。
+	多线程的实现方式:这个时候应该毫不犹豫的回答1种。面试官会有些惊讶于你的回答，因为似乎他已经习惯了听到Thread和Runnable2种方式的“标准答案”。其实，仔细审题会发现，java创
+		建线程只有一种方式：Thread。Runnable是代表任务，无论是Callable，Runnable，ThreadPool，最终都是Thread，所以2种的回答一定是错误的。
+	线程池的好处；几种线程池的创建；线程池的实现原理；什么场景下使用线程池，主要解决什么问题；如果涉及有突发流量的场景，又该如何设置；
+	Volatile的使用；
+	悲观锁、乐观锁、读写锁、可重入锁；死锁了怎么办？
+	如何避免重复创建线程池；
+	线程同步和互斥有哪几种实现的方法？
+	ReentranLock源码，设计原理，整体过程；
+	如何批量执行异步任务；
+	分布式下的同步锁实现方式：借助redis、Zookeeper实现
+	Countdownlatch，CyclicBarrir
+
+3、设计模式：
+	单例模式、策略模式
+	单例模式：
+		Public class Singleton{
+			Private Singleton(){}
+			Private Static Singleton singleton = null;
+			Private Static class getObject{
+				Public Static createObj(){
+					singleton = new Singleton();
+				}
+			}	
+			Public Singleton getSingleton(){
+				return getObject.createObj();
+			}
+		}
+
+4、JVM相关：
+	垃圾回收器一两个名字还是得叫的上来：Serial，Parallel，CMS，G1...
+	垃圾回收算法：新生代由于对象朝生夕死使用标记-清除(or标记-整理)算法，老年代生命力强使用复制算法。提到一句分代收集即可。
+	如何判断一个对象可以被回收：引用计数（可以提到Netty中的使用案例），可达性分析（JVM使用）
+
+5、IO相关：
+	BIO、NIO
+	ByteBuffer，Selector、Channel
+	netty：
+		特点：
+			1、一个高性能、异步事件驱动的NIO框架，它提供了对TCP、UDP和文件传输的支持
+			2、使用更高效的socket底层，对epoll空轮询引起的cpu占用飙升在内部进行了处理，避免了直接使用NIO的陷阱，简化了NIO的处理方式。
+			3.采用多种decoder/encoder 支持，对TCP粘包/分包进行自动化处理
+			4、可使用接受/处理线程池，提高连接效率，对重连、心跳检测的简单支持
+			5、可配置IO线程数、TCP参数， TCP接收和发送缓冲区使用直接内存代替堆内存，通过内存池的方式循环利用ByteBuf
+			6、通过引用计数器及时申请释放不再引用的对象，降低了GC频率
+			7、使用单线程串行化的方式，高效的Reactor线程模型
+			8、大量使用了volitale、使用了CAS和原子类、线程安全类的使用、读写锁的使用
+
+6、反射：
+	简单谈谈你对 Java 中 Class.forName()、Class.class、getClass() 三者的理解？
+	Class.class 的形式会使 JVM 将使用类装载器将类装入内存（前提是类还没有装入内存），不做类的初始化工作，返回 Class 对象。
+	Class.forName() 的形式会装入类并做类的静态初始化，返回 Class 对象。
+	.getClass() 的形式会对类进行静态初始化、非静态初始化，返回引用运行时真正所指的对象（因为子对象的引用可能会赋给父对象的引用变量中）所属的类的 Class 对象。
+	静态属性初始化是在加载类的时候初始化，而非静态属性初始化是 new 类实例对象的时候初始化。他们三种情况在生成 Class 对象的时候都会先判断内存中是否已经加载此类。
+
+7、动态代理：
+	jdk动态代理和cglib动态代理的区别
+
+8、Tomcat：
+	双亲委托，参数配置
+
+9、Spring：
+	AOP(面向切面)、IOC(依赖注入)、AOP里的Proxy基于什么原理实现，优缺点是什么？
+	Spring Bean的scope取值：1、singleton，2、prototype，3、request，4、session，5、global-session。默认是singleton；
+	BeanFactory的地位
+	@Transactionl相关（传播机制和隔离级别）
+	SpringMVC工作流，
+	事务管理：spring提供一个持续的事务管理接口，可以扩展到上至本地无事务下至全局事务
+
+10、SpringBoot：
+	如spring-boot-starter-data-jpa模块会默认配置JpaTransactionManager事务管理器，而spring-boot-starter-jdbc则会默认配置DataSourceTransactionManager事务管理器，两者的差异经常被用来做对比
+
+11、数据库：
+	索引的分类有哪些？面试者可以尝试自己分类回答。索引和唯一索引；聚集索引和非聚集索引；数据结构可以分为Hash和B+树索引；单列索引和联合索引。常见的索引问题还包括（A,B,C）的联合索引，查询(B,C)时会不会走索引等一些数据库的小细节。
+	事务ACID的描述和隔离级别。
+	隔离级别：
+		未提交读(Read uncommitted)：(脏读)
+		已提交读(Read committed)：避免脏读，导致不可重复读；
+		可重复读(Repeatable read)：容易幻读
+		可序列化(Serializable)：最高级别，事务级别，可避免脏读、不可重复读、幻读的发生
+		msyql默认级别是空重复读;oracle只支持串行化(Serializable)和已提交读，默认级别是已提交读
+	ACID：
+		原子性：事务里的所有操作要么全部做完，要么都不做，事务成功的条件是事务里的所有操作都成功，只要有一个操作失败，整个事务就失败，需要回滚。
+		一致性：数据库要一直处于一致的状态，事务的运行不会改变数据库原本的一致性约束。
+		持久性：持久性是指一旦事务提交后，它所做的修改将会永久的保存在数据库上，即使出现宕机也不会丢失
+		独立性：独立性是指并发的事务之间不会互相影响，如果一个事务要访问的数据正在被另外一个事务修改，只要另外一个事务未提交，它所访问的数据就不受未提交事务的影响。
+	mysql的explain查询分析也是面试的重点对象，一条分析结果的查询时间，影响行数，走了哪些索引都是分析的依据。
+
+12、Redis：
+	Redis的常用数据结构
+	Redis的持久化策略。了解RDB和AOF的使用场景
+	Redis的发布订阅
+	列举Redis的使用场景。这个可以自由发挥，除了主要功能缓存之外，还包括session共享，基于Redis的分布式锁，简易的消息队列等
+	了解Redis的集群和哨兵机制
+	高级话题包括：缓存雪崩，缓存失效，缓存穿透，预热等
+
+13、MQ：
+	JMS:java message service,是java平台上有关面向MOM(message-oriented middleware)的技术规范，只在通过提供标准的生产、发送、接收和处理消息的API简化企业应用的开发；
+	provider：java编写的JMS接口实现;
+	Domains：消息传递方式，包括点对点(P2P)、发布/订阅(Pub/Sub)
+	Connection factory：客户端使用连接工厂来创建与JMS Provider的连接
+	Destination：消息被寻址、发送以及接受的对象；
+	P2P消息域使用queue作为destination,消息可以被同步或异步的发送和接受，每个消息只会对一个consumer传送一次；
+	Pub/Sub（发布/订阅，Publish/Subscribe）消息域使用topic作为destination，发布这项topic发送消息，订阅者注册接收来自topic的消息，发送到topic的任何消息都
+	   将自动传递给所有订阅者。接收方式(同步和异步)与P2P相同；
+	列举MQ在项目中的使用场景
+	各个mq的优缺点：
+
+		特性										ActiveMQ										rabbitMQ										rocketMQ									Kafka
+		单机吞吐量					万级，吞吐量比RocketMQ和Kafka低了一个数量级		万级，吞吐量比RocketMQ和Kafka低了一个数量级					  10万级		      10万级，吞吐量高，一般配合类系统进行实时数据计算，日志采集等
+		top数量对吞吐量的影响
+		时效性
+		可用性
+		消息可靠性
+		功能支持
+		优劣势总结
+
+	ActiveMQ:
+		ActiveMQ是一个面向消息的中间件，是用于分布式应用或者系统中的异步、松耦合、可靠、可扩展和安全通信，作为消息发送器和消息接收器之间的消息中介；
+		部署模式：单例模式、无共享主从模式；
+
+14、Nginx：
+	解释反向代理：
+	常用的负载均衡算法。掌握ip_hash ，轮询，weight，fair：
+	配置动静分离：
+
+15、分布式：
+	Kafka高可用架构原理：
+	es分布式架构原理：
+	redis线程模型原理：
+	Dubbo工作原理：
+		应用场景：
+			随着业务的增长，用户量的增长，系统数量的增多，调用依赖关系也变得复杂，为了保证系统高可用、高并发的要求，系统架构从单体迁移到SOA；
+		工作原理：
+			第一层：Service层，接口层，给服务提供者和消费者实现；
+			第二层：config层，配置层，主要对dubbo进行各种配置；
+			第三层：proxy层，服务代理层，透明生成客户端的stub和服务端的skeleton；
+			第四层：register层，服务注册层，负责服务的注册和发现，
+			第五层：cluster层，集群层，封装多个服务提供者的路由及负载均衡，将多个实例组合成一个服务；
+			第六层：monitor层，监控层，对rpc接口的调用次数和调用时间进行监控；
+			第七层：protocol层，远程调用层，封装rpc调用；
+			第八层：exchange层，信息交换层，封装请求响应模式，同步转异步；
+			第九层：transport层，网络传输层，抽象mina和netty为统一接口；
+			第十层：serialize层，数据序列化层；
+		工作流程：
+			第一步：provider向注册中心注册；
+			第二步：consumer从注册中心订阅服务，注册中心会通知consumer注册好的服务；
+			第三步：consumer调用provider；
+			第四步：consumer和provider都异步通知监控中心；
+		注册中心挂了是否可以继续通信？
+			可以！刚开始初始化的时候，消费者会将提供者的地址等信息拉取到本地缓存，所以注册中心挂了也可以继续通信。
+		支持的通信协议？支持的序列化协议？
+			通信协议：
+				1、dubbo协议
+					默认走dubbo协议，单一长连接，NIO异步通信，基于hessian序列化协议；
+					使用场景：传输数据量很小（100KB内），并发量不高；
+				2、rmi协议
+					走java二进制序列化，多个短链接，适合消费者和提供者数量差不多，适用于文件的传输，一般比较少用；
+				3、hessian协议
+					走hessian序列化协议，多个短链接，适用于提供者比消费者多，适用于文件传输，一般比较少用
+				3、http协议
+					json序列化
+				4、webservice协议
+					走soap协议
+			序列化协议：
+				基于不同的通信协议，支持hessian、java二进制序列化、json、soap文本序列化协议。hessian是其默认的序列化协议；
+		负载均衡策略、集群容错策略、动态代理策略：
+			负载均衡策略：
+				1、random loadbalance
+					默认使用的随机调用策略，可以对provider不同实例设置不同权重，按照权重来负载均衡，权重越大分配的流量越大，
+				2、roundrobin loadbalance
+					均匀分配流量到各个机器，若机器性能不一样，可设置权重来分配流量
+				3、leastactive loadbalance
+					自动感知，若某个机器性能差，则给该机器分配少一点的流量
+				4、consistanthash loadbalance
+					一致性哈西算法，相同参数的请求分发到一个provider上去，provider挂掉的时候，会基于虚拟节点均匀分配剩余
+					  的流量。适用于一类请求到一个节点上去。
+			容错策略：
+				1、failover cluster模式
+					失败自动切换，自动重试其他机器，默认是failover cluster模式，常见于读操作；
+				2、failfast cluster模式
+					一次调用失败立即失败，常见于写操作；
+				3、failsafe cluster模式
+					出现异常是忽略掉，常用于不重要的接口调用，如日志记录
+				4、failbacke cluster模式
+					失败了后台自动记录请求，然后定时重发，比较适合写消息队列；
+				5、forking cluster模式
+					并行调用多个provider，只要一个成功立即返回；
+				6、broadcast cluster模式
+					逐个调用所有的provider；
+			动态代理策略：
+				默认使用javassist动态字节码生成，创建代理类，可以通过spi扩展机制配置自己的动态代理策略；
+		服务治理、服务降级、失败重试、超时重试
+			服务治理：
+				1、调用链路自动生成；
+				2、服务访问压力以及时长统计；
+				3、其他的；
+			服务降级：
+			失败重试和超时重试：
+	spring-cloud：
+
+16、Linux：
+
+17、其他：
+	业务场景的设计。诸如让你设计一个抢红包的流程，做一个秒杀的系统等等，重点考察的是一个面试者综合考虑问题的能力。
+
+	你项目中最有挑战的一个技术点。
+	网络七层：应用层、表示层、会话层、传输层、网络层、数据链路层、物理层
+
+	HTTP协议，TCP/IP协议，TCP/UDP
+		TCP/IP协议:
+
+
+	容器技术Docker
+18、HR：
+	你有没有女朋友？
+	你上家公司的离职原因？
