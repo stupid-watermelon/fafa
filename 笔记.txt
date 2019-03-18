@@ -22,7 +22,7 @@
 	ReentranLock源码，设计原理，整体过程；
 	如何批量执行异步任务；
 	分布式下的同步锁实现方式：借助redis、Zookeeper实现
-	Countdownlatch，CyclicBarrir
+	Countdownlatch，CyclicBarrir；
 
 3、设计模式：
 	单例模式、策略模式
