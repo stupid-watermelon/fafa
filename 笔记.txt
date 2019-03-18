@@ -25,7 +25,7 @@
 	Countdownlatch，CyclicBarrir；
 
 3、设计模式：
-	单例模式、策略模式
+	单例模式、策略模式；
 	单例模式：
 		Public class Singleton{
 			Private Singleton(){}
